@@ -26,4 +26,6 @@ COPY entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh /bin/rv
 
-ENTRYPOINT ["/entrypoint.sh", "/bin/rv"]
+ENTRYPOINT ["/entrypoint.sh"]
+
+CMD [ "/bin/rv" ]

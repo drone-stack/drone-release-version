@@ -9,6 +9,22 @@ import (
 	"github.com/urfave/cli"
 )
 
+type formatter struct{}
+
+func (*formatter) Format(entry *logrus.Entry) ([]byte, error) {
+	return []byte(entry.Message), nil
+}
+
+func init() {
+	// logrus.SetFormatter(&logrus.TextFormatter{
+	// 	DisableTimestamp: true,
+	// 	DisableColors:    true,
+	// })
+	logrus.SetFormatter(new(formatter))
+	logrus.SetOutput(os.Stdout)
+	logrus.SetLevel(logrus.DebugLevel)
+}
+
 func main() {
 	// Load env-file if it exists first
 	if env := os.Getenv("PLUGIN_ENV_FILE"); env != "" {
@@ -54,6 +70,7 @@ func run(c *cli.Context) error {
 		Token:   c.String("token"),
 		Name:    c.String("name"),
 		Release: c.String("release"),
+		Type:    c.String("type"),
 	}
 
 	if err := plugin.Exec(); err != nil {

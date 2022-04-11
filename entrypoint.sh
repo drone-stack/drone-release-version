@@ -18,8 +18,15 @@ if [ ! -z "${PLUGIN_PROXY}" ]; then
 	echo "http proxy done"
 fi
 
+export PLUGIN_VERSIONFILE=${PLUGIN_VERSIONFILE:-VERSION}
+
 if [ -z "${PLUGIN_RELEASE}" ]; then
-    export PLUGIN_RELEASE=$(cat VERSION)
+	if [ -f ${PLUGIN_VERSIONFILE} ]; then
+		export PLUGIN_RELEASE=$(cat ${PLUGIN_VERSIONFILE})
+	else
+		echo "${PLUGIN_VERSIONFILE} does not exist"
+		exit 1
+	fi
 fi
 
 exec "$@"

@@ -1,4 +1,4 @@
-FROM ysicing/goa AS gobuild
+FROM ysicing/god AS gobuild
 
 LABEL maintainer="ysicing <i@ysicing.me>"
 
@@ -16,16 +16,16 @@ COPY . .
 
 WORKDIR /go/src/cmd
 
-RUN go build -o ./rv
+RUN go build -o ./drone-rv
 
 FROM ysicing/debian
 
-COPY --from=gobuild /go/src/cmd/rv /bin/
+COPY --from=gobuild /go/src/cmd/drone-rv /bin/drone-rv
 
 COPY entrypoint.sh /entrypoint.sh
 
-RUN chmod +x /entrypoint.sh /bin/rv
+RUN chmod +x /entrypoint.sh /bin/drone-rv
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD [ "/bin/rv" ]
+CMD [ "/bin/drone-rv" ]
